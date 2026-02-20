@@ -1,80 +1,37 @@
-import React, { useContext, useEffect } from 'react'
-import { DoctorContext } from './context/DoctorContext'
-import { AdminContext } from './context/AdminContext'
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
-import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
-import Dashboard from './pages/Admin/Dashboard'
-import AllAppointments from './pages/Admin/AllAppointments'
-import AddDoctor from './pages/Admin/AddDoctor'
-import DoctorsList from './pages/Admin/DoctorsList'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import Doctors from './pages/Doctors'
 import Login from './pages/Login'
-import DoctorAppointments from './pages/Doctor/DoctorAppointments'
-import DoctorDashboard from './pages/Doctor/DoctorDashboard'
-import DoctorProfile from './pages/Doctor/DoctorProfile'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import MyProfile from './pages/MyProfile'
+import MyAppointment from './pages/MyAppointment'
+import Appointment from './Appointment'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const { dToken } = useContext(DoctorContext)
-  const { aToken } = useContext(AdminContext)
-  const location = useLocation()
-
-  // Redirect "/" to the proper dashboard
-  if (location.pathname === '/') {
-    if (aToken) return <Navigate to="/admin-dashboard" replace />
-    if (dToken) return <Navigate to="/doctor-dashboard" replace />
-  }
-
-  // Admin layout and routes
-  if (aToken) {
-    return (
-      <div className='bg-[#F8F9FD]'>
-        <ToastContainer />
-        <Navbar />
-        <div className='flex items-start'>
-          <Sidebar />
-          <Routes>
-            <Route path="/admin-dashboard" element={<Dashboard />} />
-            <Route path="/all-appointments" element={<AllAppointments />} />
-            <Route path="/add-doctor" element={<AddDoctor />} />
-            <Route path="/doctor-list" element={<DoctorsList />} />
-            <Route path="*" element={<Navigate to="/admin-dashboard" />} />
-          </Routes>
-        </div>
-      </div>
-    )
-  }
-
-  // Doctor layout and routes
-  if (dToken) {
-    return (
-      <div className='bg-[#F8F9FD]'>
-        <ToastContainer />
-        <Navbar />
-        <div className='flex items-start'>
-          <Sidebar />
-          <Routes>
-            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-            <Route path="/doctor-appointments" element={<DoctorAppointments />} />
-            <Route path="/doctor-profile" element={<DoctorProfile />} />
-            <Route path="*" element={<Navigate to="/doctor-dashboard" />} />
-          </Routes>
-        </div>
-      </div>
-    )
-  }
-
-  // No one is logged in
   return (
-    <>
+    <div className='mx-4 sm:mx-[10%]'>
       <ToastContainer />
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/doctors' element={<Doctors />} />
+        <Route path='/doctors/:speciality' element={<Doctors />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/my-profile' element={<MyProfile />} />
+        <Route path='/my-appointments' element={<MyAppointment />} />
+        <Route path='/appointment/:docId' element={<Appointment />} />
+
       </Routes>
-    </>
+      <Footer />
+    </div>
   )
 }
 
